@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <!-- ... Your existing navbar code ... -->
+  </nav>
+
+  <div class="container">
+    <section>
+      <h1>Contact Us</h1>
+      <form class="mb-3" id="contactForm" action="submit_form.php" method="post">
+        <div class="alert alert-success mb-3" style="display: none;" role="alert" id="success_message">
+          Contact message was successfully sent!
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" name="name" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" name="email" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Phone</label>
+          <input type="tel" name="phone" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" name="message" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </section>
+  </div>
+
+  <section>
+    <footer class="bg-success text-center py-3">
+      <span class="text-light">&copy; 2021 Robogarden Inc.</span>
+    </footer>
+  </section>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $("#contactForm").submit(function (e) {
+        e.preventDefault();
+
+        var name = $("input[name='name']").val();
+        var email = $("input[name='email']").val();
+        var phone = $("input[name='phone']").val();
+        var message = $("textarea[name='message']").val();
+
+        if (name === "" || email === "" || message === "") {
+          alert("Name, email, and message are required fields.");
+          return;
+        }
+
+        $.ajax({
+          type: "POST",
+          url: "submit_form.php",
+          data: $(this).serialize(),
+          dataType: 'json',
+          success: function (response) {
+            if (response.success) {
+              $("#success_message").show();
+              $("#contactForm").hide();
+            } else {
+              alert("Error submitting the form. Please try again later.");
+            }
+          },
+          error: function () {
+            alert("Error submitting the form. Please try again later.");
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
